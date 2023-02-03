@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -72,6 +73,11 @@ public class JwtExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<BaseResponse<?>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return ResponseEntity.badRequest().body(new BaseResponse<>(BaseResponseStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    public ResponseEntity<BaseResponse> handleAuthenticationCredentialsNotFoundException(HttpMessageNotReadableException e) {
         return ResponseEntity.badRequest().body(new BaseResponse<>(BaseResponseStatus.BAD_REQUEST));
     }
 
